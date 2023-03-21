@@ -1,2 +1,0 @@
-
-# Create the main window
