@@ -1,7 +1,10 @@
 import datetime
+import os
 from tkinter import *
 from docx import Document
     
+last_date = None
+
 # Create the main window
 root = Tk()
 
@@ -12,7 +15,7 @@ root.title("JustJot")
 root.geometry("500x700")
 
 # Create a label for the title
-title_label = Label(root, text="JustJot", font=("Helvetica", 20))
+title_label = Label(root, text="JustJot", font=("Italic", 20))
 title_label.pack(pady=20)
 
 # Create a label for the journal entry
@@ -36,25 +39,53 @@ entry_text.config(yscrollcommand=scrollbar.set)
 scrollbar.pack(side=RIGHT, fill=Y)
 
 #documents
-journal = Document()
 file_name = str(datetime.date.today().year) + 'Jots.docx'
 file_path = 'E:\\' + file_name
 
+if os.path.isfile(file_path):
+    journal = Document(file_path)
+else:
+    journal = Document()
+
 def on_key_press(event):
+    global last_date
+
     if event.keysym == 'Return':
         if event.state == 12:
             value=entry_text.get("1.0",END)
+            if not value:
+                return
+
             if title_text.get() != '':
-                print(title_text.get())
+                isTitled = True
             else:
-                print('no title')
+                isTitled = False
+
+            now = datetime.datetime.now()
+            dt_string = now.strftime("%d/%m/%Y")
+
+            if dt_string == last_date:
+                prefix = '\t'
+            else:
+                prefix = f'{dt_string}\n'
+                last_date = dt_string
+                
+            time = now.strftime('%H:%M')
+            if isTitled:
+                p = journal.add_paragraph(prefix + time)
+                p.add_run(f'\n{title_text.get()}').bold = True
+                journal.add_paragraph(f'\t{value}')
+            else:
+                journal.add_paragraph(f'{time}\n{value}')
+            title_text.delete(0, END)
             entry_text.delete('1.0', END)
             print(value)
+            journal.save(file_path)
 
 root.bind("<Control-KeyPress>", on_key_press)
 title_text.focus_set()
 
-journal.save(file_path)
+
 
 # Run the main event loop
 root.mainloop()
