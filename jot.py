@@ -64,17 +64,19 @@ def on_key_press(event):
             now = datetime.datetime.now()
             dt_string = now.strftime("%d/%m/%Y")
 
-            if dt_string == last_date:
-                prefix = '\t'
-            else:
-                prefix = f'{dt_string}\n'
-                last_date = dt_string
                 
             time = now.strftime('%H:%M')
+
+            for para in reversed(journal.paragraphs):
+                if dt_string in para.text:
+                    dated = True
+
+            if not dated:
+                journal.add_paragraph('====================================================================\n' + dt_string)
             if isTitled:
-                p = journal.add_paragraph(prefix + time)
+                p = journal.add_paragraph(time)
                 p.add_run(f'\n{title_text.get()}').bold = True
-                journal.add_paragraph(f'\t{value}')
+                p.add_run(f'\n\t{value}')
             else:
                 journal.add_paragraph(f'{time}\n{value}')
             title_text.delete(0, END)
