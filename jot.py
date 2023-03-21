@@ -66,7 +66,7 @@ def on_key_press(event):
 
                 
             time = now.strftime('%H:%M')
-
+            dated = False
             for para in reversed(journal.paragraphs):
                 if dt_string in para.text:
                     dated = True
