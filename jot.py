@@ -1,5 +1,7 @@
+import datetime
 from tkinter import *
-
+from docx import Document
+    
 # Create the main window
 root = Tk()
 
@@ -33,14 +35,27 @@ entry_text.config(yscrollcommand=scrollbar.set)
 # Set the scrollbar to fill the y-axis of the window
 scrollbar.pack(side=RIGHT, fill=Y)
 
-# Define a function to get the journal entry
-def get_entry(event):
-    # Do something when Ctrl+Enter is pressed
-    if event.state == 4 and event.keysym == 'Return':
-        print("Ctrl+Enter pressed!")
-        
-# Bind the Ctrl+Enter key combination to the get_entry function
-entry_text.bind("<Control-Return>", get_entry)
+#documents
+journal = Document()
+file_name = str(datetime.date.today().year) + 'Jots.docx'
+file_path = 'E:\\' + file_name
+
+def on_key_press(event):
+    if event.keysym == 'Return':
+        if event.state == 12:
+            value=entry_text.get("1.0",END)
+            if title_text.get() != '':
+                print(title_text.get())
+            else:
+                print('no title')
+            entry_text.delete('1.0', END)
+            print(value)
+
+root.bind("<Control-KeyPress>", on_key_press)
+title_text.focus_set()
+
+journal.save(file_path)
 
 # Run the main event loop
 root.mainloop()
+
