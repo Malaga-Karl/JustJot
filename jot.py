@@ -12,7 +12,7 @@ root = Tk()
 root.title("JustJot")
 
 # Set the window size
-root.geometry("500x700")
+root.geometry("500x700+{}+{}".format(int(root.winfo_screenwidth()*0.7), int(root.winfo_screenheight()*0.1)))
 
 # Create a label for the title
 title_label = Label(root, text="JustJot", font=("Italic", 20))
