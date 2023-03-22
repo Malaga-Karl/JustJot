@@ -41,7 +41,7 @@ scrollbar.pack(side=RIGHT, fill=Y)
 #documents
 home_dir = os.path.expanduser("~")
 file_name = str(datetime.date.today().year) + 'Jots.docx'
-file_path = os.path.join(home_dir, file_name)
+file_path = 'E:\\' + file_name
 
 if os.path.isfile(file_path):
     journal = Document(file_path)
