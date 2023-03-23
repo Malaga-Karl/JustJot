@@ -52,7 +52,7 @@ def on_key_press(event):
     global last_date
 
     if event.keysym == 'Return':
-        if event.state == 12:
+        if event.state == 4:
             value=entry_text.get("1.0",END)
             if not value:
                 return
@@ -85,7 +85,11 @@ def on_key_press(event):
             print(value)
             journal.save(file_path)
 
+def test(event):
+    print(event.keysym, event.state)
+
 root.bind("<Control-KeyPress>", on_key_press)
+
 title_text.focus_set()
 
 
