@@ -52,7 +52,7 @@ def on_key_press(event):
     global last_date
 
     if event.keysym == 'Return':
-        if event.state == 12:
+        if event.state == 4:
             value=entry_text.get("1.0",END)
             if not value:
                 return
